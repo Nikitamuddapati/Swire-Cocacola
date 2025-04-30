@@ -67,3 +67,13 @@ High-Priority States:
 
 **Final Presentation:** Delivered actionable insights and presented findings to stakeholders with clear business recommendations summarizing growth + low-cost trends, model results, and ROI strategies.
 
+## Challenges Faced
+
+Mapping delivery costs to customer volume was complex due to tiered ranges, requiring conditional joins to correctly assign cost per case/gallon.
+
+Determining the optimal threshold for identifying growth-ready customers required balancing cost minimization with growth maximization using a sensitivity analysis.
+
+Class imbalance in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
+
+Distinguishing between feature importance and actual customer characteristics required building comparative summaries to identify true growth-ready traits beyond the model.
+
