@@ -79,3 +79,15 @@ High-Priority States:
 
 **4. Distinguishing between feature importance and actual customer characteristics** required building comparative feature means to identify true growth-ready vs non growth-ready traits beyond what the model relies on.
 
+
+## Learnings
+
+**1. Bridging Business and Data:** I learned how to interpret analytical results in terms of business impact, connecting data insights to strategic decisions that drive growth and cost optimization.
+
+**2. Handling Complex Joins & Volume Ranges:** Working with delivery cost tables that relied on volume range conditions enhanced my skills in conditional merging and applying logic-driven joins.
+
+**3. Sensitivity Analysis for Strategy:** I learned to apply sensitivity analysis to uncover operational levers like threshold tuning, which can optimize both growth potential and cost efficiency.
+
+**4. Communicating Insights Visually:** Creating presentation visuals and dashboards helped me better understand what the data truly conveys, while also improving my ability to clearly communicate insights to both technical and business audiences.
+
+
