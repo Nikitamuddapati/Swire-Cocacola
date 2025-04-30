@@ -40,10 +40,3 @@ This analysis identifies strategies to increase "growth-ready" customers (those 
 **High-Priority States:**
   - priority_states:  MA, KS, KY, MD
   -  62% of high-density customers
-
-## My Contribution
-
-
-
-
-
