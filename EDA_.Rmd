@@ -1,0 +1,637 @@
+# EDA Overview
+
+**Background:**
+
+SCCU(Swire Coca-Cola United States) tries to optimize logistics by transitioning customers selling below a specific annual volume to an Alternate Route to Market (ARTM). There is an annual 400 gallons volume threshold used to distinguish between the direct delivery route and ARTM. However, SCCU is looking for a more cost-efficient strategy to decide new threshold for optimizing logistics which is driving better operational efficiency and more revenues.
+
+**Requirement:**
+
+1.  The analysis will focus on classifying which customers must be included in ARTM or Direct route, and which volume threshold would be optimal to decide for the classification.
+
+2.  The analysis will focus on two key customer segments.
+
+-   1st Group: Local Market Partners that buy fountains only: Customers who buy only fountain drinks and no CO2, cans, or bottles.
+-   2nd Group: This group includes all customers, regardless of whether they are local market partners or not, and includes those purchasing CO2, cans, bottles, or fountain drinks.
+
+**Questions:**
+
+-   What factors or characteristics distinguish customers with annual sales exceeding the determined volume threshold from those below this threshold?
+-   How can SCCU uses historical sales data, or other Customer Characteristics to predict which ARTM customers have the potential to grow beyond the volume threshold annually?
+-   How can these insights be integrated into the routing strategy to support long-term growth while maintaining logistical efficiency?
+-   What levers can be employed to accelerate volume and share growth at growth-ready, high-potential customers?
+
+## Import libraries
+
+```{r, warning= FALSE}
+# import libraries
+library(tidyverse)
+library(janitor)
+library(skimr)
+library(psych)
+library(glue)
+library(here)
+library(readxl)
+library(lubridate)
+```
+
+## Import Datasets
+
+-   There are 4 datasets used for the analysis, which contains address, customer profile, delivery cost, and transaction history.
+
+```{r, warning= FALSE, message = FALSE}
+
+
+
+profile_df <- read_csv("C:/Users/nikit/Downloads/Capstone Project/customer_profile.csv")
+
+delivery_cost_df <- read_xlsx("C:/Users/nikit/Downloads/Capstone Project/delivery_cost_data1.xlsx")
+
+trans_df <- read_csv("C:/Users/nikit/Downloads/Capstone Project/transactional_data.csv")
+
+address_df<- read_csv("C:/Users/nikit/Downloads/Capstone Project/customer_address_zip.csv")
+
+```
+
+## Dataset Profiling & Exploration
+
+### 1. Address Dataset Profile
+
+Variables can be described as below.
+
+-   Zip: ZIP code for the location.
+-   Full address: Full address information seperated by , including city, state, county, region, and latitude/longitude.
+-   Full address is listed in the order of zipcode, city, state full name, state acronym, county, FIPS codes, latitude, longitude
+
+```{r}
+
+sample_n(address_df, 10)
+
+```
+
+### 2. Customer Profile Dataset Profile
+
+Variables can be described as below.
+
+-   Customer Number: Unique identifying number of customer
+-   Primary Group Number: The group number of which customer mainly belongs to
+-   Frequent Order Type: The order type that customer mainly uses
+-   First Delivery Date: The date that first delivery was made
+-   On Boarding Date: The date that first transaction was made
+-   Cold Drink Channel: General channel category for cold drink purchases (e.g., "DINING")
+-   Trade Channel: Detailed channel classification (e.g., "OTHER DINING & BEVERAGE")
+-   Sub Trade Channel: Sub-classification within the trade channel (e.g., "OTHER DINING")
+-   Local Market Partner: Whether customer is local market partner (True or False)
+-   CO2 Customer: Whether customer purchases CO2 product or not (True or False)
+-   Zip Code: customer address zip code which is connected with Zip variable in `address_df`
+
+```{r}
+sample_n(profile_df,10)
+```
+
+### 3. Delivery Cost Dataset Profile
+
+Variables can be described as below.
+
+-   Cold Drink Channel: The main functional category of commerce
+-   Vol Range: The annual volume range of products
+-   Applicable to: which category of products that volumes apply to
+-   Median Delivery Cost: Median cost of delivery per cost type
+-   Cost type: the unit by measuring the cost
+-   Fountain → Measured in gallons (Per Gallon)
+-   Bottles and Cans → Measured in cases (Per Case).
+
+```{r}
+
+sample_n(delivery_cost_df,10)
+
+```
+
+### 4. Transaction Dataset Profile
+
+Variables can be described as below.
+
+-   Transaction Date: Date of the transaction (YYYY-MM-DD format).
+-   Week: Week number of the year when the transaction occurred.
+-   Year: Year of the transaction occurred.
+-   Customer Number: Unique identifier for the customer.
+-   Order Type: Type of order placed
+-   Ordered Cases: The amount of cases that ordered
+-   Loaded Cases: The amount of cases that loaded in the truck
+-   Delivered Cases: The amount of cases that delivered to the customer
+-   Ordered Gallons: The amount of gallons that ordered
+-   Loaded Gallons: The amount of gallons that loaded in the truck
+-   Delivered Gallons: The amount of gallons that delivered to the customer
+
+-   **Information 1**: One standard physical case equating to one gallon, allowing for a direct summation of cases and gallons.
+-   **Information 2**: Negative delivered volume must be considered as a return.
+
+```{r}
+sample_n(trans_df,10)
+```
+
+## Skimming of Dataset
+
+```{r}
+skim(address_df)
+skim(profile_df)
+skim(delivery_cost_df)
+skim(trans_df)
+```
+
+## Checking NA per variable
+
+```{r}
+colSums(is.na(address_df))
+colSums(is.na(profile_df))
+colSums(is.na(delivery_cost_df))
+colSums(is.na(trans_df))
+
+colSums(is.na(address_df)) / nrow(address_df) * 100
+colSums(is.na(profile_df)) / nrow(profile_df) * 100
+colSums(is.na(delivery_cost_df)) / nrow(delivery_cost_df) * 100
+colSums(is.na(trans_df)) / nrow(trans_df) * 100
+
+```
+
+-   `PRIMARY_GROUP_NUMBER` has a 18196 missing values, which takes up 60% of `profile_df` dataset.
+
+## The list of EDA questions
+
+-   How many customers are partnered with Local Market Partners out of the entire customers?
+-   How many customers are purchasing C02 products out of entire customers?
+-   Which customer segment (CO2 vs Non-CO2) have brought more profits from given transaction data?
+-   Which type of channel has the highest volume of total ordering?
+-   How many customers belongs to the direct route based on the existing volume threshold? And how many customers belong to the ARTM based on the existing volume threshold?
+-   How many customers belongs to the Local Market Partners that buy fountains only?
+-   Which channel is related with the most profits out of the entire transaction?
+
+```{r}
+
+
+trans_df$TRANSACTION_DATE <- as.character(trans_df$TRANSACTION_DATE)
+
+min(as.Date(trans_df$TRANSACTION_DATE, format="%m/%d/%Y"))
+max(as.Date(trans_df$TRANSACTION_DATE, format="%m/%d/%Y"))
+
+
+
+#min(as.Date(trans_df$TRANSACTION_DATE,format="%m/%d/%Y"))
+#max(trans_df$TRANSACTION_DATE)
+#colSums(is.na(trans_df))
+
+
+
+
+```
+The first
+
+
+### The summary table of Local Market Partner Customer
+
+```{r}
+# the distribution of local market partner customers out of entire customers
+table(profile_df$LOCAL_MARKET_PARTNER)
+round(prop.table(table(profile_df$LOCAL_MARKET_PARTNER)),2)
+```
+
+Approximately, 90% of listed customers belong to the local market partners, which indicates that they are smaller, regionally focused customers who serve their local communities. They tend to show their reliance on local market dynamics and consistent purchasing patterns.
+
+### The summary table of of CO2 customer
+
+```{r}
+# the distribution of CO2 customers out of entire customers
+table(profile_df$CO2_CUSTOMER)
+round(prop.table(table(profile_df$CO2_CUSTOMER)),2)
+```
+
+Approximately, 40% of listed customer belongs to the CO2 customer, which represents that they have purchased carbon dioxide materials.
+
+### Total number of Customers in transaction
+
+```{r}
+trans_df %>%
+  summarise(customer_n = n_distinct(CUSTOMER_NUMBER))
+```
+
+30322 customers have transacted with SCCU between 1/1/2023 and 12/31/2024. (2 years)
+
+```{r}
+
+#head(trans_df)
+#colSums(is.na(trans_df))
+
+colSums(is.na(trans_history))
+
+trans_history <-
+trans_df %>%
+  mutate(TRANSACTION_DATE = as.Date(TRANSACTION_DATE, format="%m/%d/%Y")) %>%   #change to date format
+  group_by(CUSTOMER_NUMBER) %>%  #for each unique customer,
+  summarise(
+            FIRST_TRANSACTION_DATE = min(TRANSACTION_DATE),  #find earliest transaction
+            LAST_TRANSACTION_DATE = max(TRANSACTION_DATE),   # find latest transaction
+            
+            TRANS_DAYS = LAST_TRANSACTION_DATE - FIRST_TRANSACTION_DATE + 1,   #total no.of days in between the first transaction and last transaction
+            
+            TRANS_COUNT = n(),  #total no. of transactions for each customer
+            
+            TRANS_COUNT_2023 = sum((lubridate::year(TRANSACTION_DATE) == 2023)),  # total no. of transactions for each customer in 2023
+            
+            TRANS_COUNT_2024 = sum((lubridate::year(TRANSACTION_DATE) == 2024)),   #total no. of transactions for each customer in 2024
+            
+            
+            #total no. of  ordered cases and gallons in 2023, 2024.
+            
+            ANNUAL_VOLUME_CASES_2023 = sum((lubridate::year(TRANSACTION_DATE) == 2023) * ORDERED_CASES, na.rm = TRUE),
+            
+            ANNUAL_VOLUME_GALLON_2023 = sum((lubridate::year(TRANSACTION_DATE) == 2023) * ORDERED_GALLONS, na.rm = TRUE),
+            
+            ANNUAL_VOLUME_CASES_2024 = sum((lubridate::year(TRANSACTION_DATE) == 2024) * ORDERED_CASES, na.rm = TRUE),
+            
+            ANNUAL_VOLUME_GALLON_2024 = sum((lubridate::year(TRANSACTION_DATE) == 2024) * ORDERED_GALLONS, na.rm = TRUE),
+            
+            # compute tot annual volume (cases + gallons) of 2023
+            
+            ANNUAL_VOLUME_2023 = sum((lubridate::year(TRANSACTION_DATE) == 2023) * (ORDERED_CASES + ORDERED_GALLONS), na.rm = TRUE),
+            
+            # compute the average no. of orders per each transaction (2023)
+            
+            AVG_ORDER_VOLUME_2023 = ANNUAL_VOLUME_2023 / TRANS_COUNT_2023,
+            
+            # compute tot annual volume (cases + gallons) of 2024
+            
+            ANNUAL_VOLUME_2024 = sum((lubridate::year(TRANSACTION_DATE) == 2024) * (ORDERED_CASES + ORDERED_GALLONS), na.rm = TRUE),
+            
+            # compute the average no. of orders per each transaction (2024)
+            
+            AVG_ORDER_VOLUME_2024 = ANNUAL_VOLUME_2024 / TRANS_COUNT_2024,
+            
+            
+            # change in volume- in number and percentage
+            
+            CHANGED_VOLUME = ANNUAL_VOLUME_2024 - ANNUAL_VOLUME_2023,
+            PERCENT_CHANGE = round(CHANGED_VOLUME/ANNUAL_VOLUME_2023,2) * 100,
+            
+            #categorize customer as high or low potential in 2023 and 2024
+            
+            THRESHOLD_2023 = ifelse(ANNUAL_VOLUME_2023 >= 400, 'above', 'below'),
+            THRESHOLD_2024 = ifelse(ANNUAL_VOLUME_2024 >= 400, 'above', 'below'),
+  ) %>%
+  ungroup()
+
+
+head(trans_history,20)
+
+
+
+#View(trans_history)
+
+#sum(is.na(trans_history))
+
+```
+
+-   ANNUAL_VOLUME(Total) = AVG_ORDER_VOLUME (Volume)\* TRANS_COUNT(Frequency of purchasing for each customer)
+-   EX) 500316009 2023- 83.0000 / 2024 569.00000 per case/gallon \$3 2023 - 3*83 = 249 2024 - 569* 3 = 1677 Alternate Route to Market DELIVERY COST - 1000
+
+
+
+
+
+```{r}
+thres_change_customer <-
+trans_history %>%
+  filter(THRESHOLD_2023 != THRESHOLD_2024)   #Keep only customers where 2023 volume threshold is not equal to 2024 volume threshold(above, below values have changed). Exclude customers who remain in the same category.
+
+thres_change_customer
+```
+
+In this step, we are trying to filter out only customers whose threshold classification (above/below 400 gallons) has changed from 2023 to 2024.
+
+
+```{r}
+
+# Get the numbers and percentages of the 
+table(thres_change_customer$THRESHOLD_2023, thres_change_customer$THRESHOLD_2024)
+
+round(prop.table(table(thres_change_customer$THRESHOLD_2023, thres_change_customer$THRESHOLD_2024)),2)
+```
+Out of these 30,322 customers, 2,378(around 8%) customers experienced a change in volume from 2023 to 2024 based on the 400 gallons threshold. Among them,
+- 1128 (about 47%)of the customers who were above the 400 gallons threshold in 2023 dropped below the threshold in 2024.
+- 1250 (about 52%) of the customers who were below 400 gallons threshold in 2023 moved above the threshold in 2024.
+
+
+### Changes in volume statistics
+
+```{r}
+# total customer growth statistics 
+
+trans_history %>%          # get summary statistics of "changed volume" on total tran_history dataset
+  summarise(AVG_GROWTH_VOL = mean(CHANGED_VOLUME),
+            MED_GROWTH_VOL = median(CHANGED_VOLUME),
+            MIN_GROWTH_VOL = min(CHANGED_VOLUME),
+            MAX_GROWTH_VOL = max(CHANGED_VOLUME))
+
+
+
+# potential growth customer statistics
+
+thres_change_customer %>% # now get summary statistics of "changed volume" only on the customers where there is potential change from 2023 to 2024
+  
+  filter(THRESHOLD_2023 == 'below' & THRESHOLD_2024 == 'above') %>%  # only customers who moved from below to above 400 threshold classification
+  summarise(AVG_GROWTH_VOL = mean(CHANGED_VOLUME),
+            MED_GROWTH_VOL = median(CHANGED_VOLUME),
+            MIN_GROWTH_VOL = min(CHANGED_VOLUME),
+            MAX_GROWTH_VOL = max(CHANGED_VOLUME))
+
+
+
+```
+
+As the initial trans_history data contains customers with negative growth (declining from above to below), no volume change, and a mix of high and low volume customers, this pulls the overall average growth volume down to just 32.5 gallons, median to 0 gallons, and negative growth to -132830 gallons. 
+
+However, the average change in volume increase for the high potential customers from 2023 to 2024 is about 1035 gallons while the maximum volume increase is 86977 gallons. The medium growth volume is observed to be 418 gallons and the minimum growth volume stands at 8.5 gallons. 
+
+It is observed the difference in average volume from high potential and high potential plus low potential customers stands at about 1003 gallons. 
+
+
+### Changes in volume distribution
+
+```{r}
+
+# histogram and boxplot off change in volume distribution
+
+thres_change_customer %>%
+  filter(THRESHOLD_2023 == 'below' & THRESHOLD_2024 == 'above') %>%  #include only customers who moved above
+  ggplot() +
+  geom_histogram(aes(x = CHANGED_VOLUME)) +
+  theme_minimal()
+
+thres_change_customer %>%
+  filter(THRESHOLD_2023 == 'below' & THRESHOLD_2024 == 'above') %>%  #include only customers who moved above
+  ggplot() +
+  geom_boxplot(aes(x = CHANGED_VOLUME)) +
+  theme_minimal()
+```
+
+### Combining the Datasets (Data Modeling)
+
+```{r}
+
+#combine customer profile with the trans history dataset
+
+trans_profile_df <- left_join(trans_history, profile_df, by = 'CUSTOMER_NUMBER')
+
+sample_n(trans_profile_df,10)
+
+
+```
+
+
+Out of `trans_history`, we could find out below insights
+
+-   There are 30,322 unique customers out of transaction history data from 2023/01/01 to 2024/12/31. (2 years)
+-   SALES REP (sales representatives) takes 75% of order type in total 2 years transactions, followed by OTHERS, and MYCOKE360 (Digital Ordering Platform), which indicates that personal touch is still significant to maintain the sales.
+-   Even if 27,221 (approximately 90%) unique customers belongs to the Local Market Customers, their total volume of transaction takes up 72% (19,313,621 + 8,440,877) of entire transactions.
+-   Local market customers are likely to order for dining +6 more frequency than non-local market customer and which takes up 23% of total transaction volumes.
+-   Local market customers are likely to order for goods +10 more in frequency than non-local market customer and which takes up 12% of total transaction volumes.
+
+
+
+```{r}
+
+#combine trans_history with delivery_cost dataset
+
+# Save the results to new csv
+
+#write_csv(trans_history, "C:/Users/nikit/Downloads/Capstone Project/trans_history.csv")
+
+
+# 🔹 1. Preprocess Delivery Cost Data
+# Clean 'Median Delivery Cost' column by removing '$' and converting to numeric
+delivery_cost_df1 <- delivery_cost_df %>%
+  mutate(`Median Delivery Cost` = as.numeric(gsub("\\$", "", `Median Delivery Cost`)))
+
+
+# Split 'Vol Range' into separate Min and Max Volume columns(only with the numbers instead of range)
+
+delivery_cost_df1 <- delivery_cost_df1 %>%
+  separate('Vol Range', into = c("Min_Vol", "Max_Vol"), sep = " - ", convert = TRUE, fill = "right")  #this will make all the "1350+" as NA's in the max_vol column as 1350+ will already be included in the min_vol column.
+
+
+# Handle '1350+' cases by replacing the NA values in 'Max_Vol' column with large number(99999)
+
+delivery_cost_df1 <- delivery_cost_df1 %>%
+  mutate(Max_Vol = ifelse(is.na(Max_Vol), 99999, as.numeric(Max_Vol)))
+
+
+head(delivery_cost_df1,10)
+
+```
+
+### Compute the delivery cost of each customer
+
+```{r}
+
+
+# We get the cold drink channel for each customer from joining the customer profile and trans_history datasets which we did above. i.e, trans_profile_df.
+
+
+#class(trans_profile_df$ANNUAL_VOLUME_2023)
+
+delivery_cost_df1 <- delivery_cost_df1 %>%
+  mutate(COLD_DRINK_CHANNEL = `Cold Drink Channel`)
+
+
+  delivery_cost_df1 <- delivery_cost_df1 %>%
+    select(-`Cold Drink Channel`)
+
+#  Now join trans_profile_df with delivery_cost_df1 on cold drink channel and vol range. Note that we should also join on vol range as in trans_profile_df, many customers belong to the same channel such as dining. Also in delivery_costs_df1, multiple costs exists for same channel, creating many-to-many relationship. A normal join will not work and we need to use a fuzzy left join(interval join) to join on ranges.
+
+
+
+#install.packages("fuzzyjoin")
+#install.packages("BiocManager")
+#BiocManager::install("IRanges")
+
+library(fuzzyjoin)
+library(IRanges)
+
+
+delivery_cost_agg <- delivery_cost_df1 %>%
+  group_by(COLD_DRINK_CHANNEL, Min_Vol, Max_Vol,`Applicable To`,`Cost Type`) %>%  # group by channel, max and min vol, and cost type to get delivery cost
+  summarise(
+    Median_Delivery_Cost = median(`Median Delivery Cost`, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+head(delivery_cost_agg,15)
+
+
+
+# Use interval join instead of left_join
+cost_2023 <- trans_profile_df %>%
+  fuzzy_left_join(
+    delivery_cost_agg,
+    by = c(
+      "COLD_DRINK_CHANNEL" = "COLD_DRINK_CHANNEL",
+      "ANNUAL_VOLUME_2023" = "Min_Vol",
+      "ANNUAL_VOLUME_2023" = "Max_Vol"
+    ),
+    match_fun = list(`==`, `>=`, `<=`)  # Ensures volume falls within the range
+  )
+
+
+
+# extract highest delivery costs in 2023
+
+
+top15_costs <- cost_2023 %>%
+  arrange(desc(Median_Delivery_Cost)) %>%
+  slice_head(n =15)
+
+print(top15_costs)
+
+
+# extract the delivery cost for the highest records in transaction count, average order volume, and annual volume cases in 2023
+highest_records <- cost_2023 %>%
+  filter(TRANS_COUNT == max(TRANS_COUNT)| TRANS_COUNT_2023 == max(TRANS_COUNT_2023)| TRANS_COUNT_2024 == max(TRANS_COUNT_2024) | AVG_ORDER_VOLUME_2023 == max(AVG_ORDER_VOLUME_2023) | AVG_ORDER_VOLUME_2024 == max(AVG_ORDER_VOLUME_2024) | ANNUAL_VOLUME_CASES_2023 == max(ANNUAL_VOLUME_CASES_2023) |ANNUAL_VOLUME_CASES_2024 == max(ANNUAL_VOLUME_CASES_2024))
+
+
+print(highest_records)
+
+
+
+
+# extract lowest delivery costs in 2023
+
+low25_costs <- cost_2023 %>%
+  arrange(Median_Delivery_Cost) %>%
+  slice_head(n =25)
+
+print(low25_costs)
+
+
+#extract high volume customers, high cost
+
+
+#cost_2023 %>%
+ #filter(Min_Vol == max(Min_Vol) | Median_Delivery_Cost == max(Median_Delivery_Cost)) %>%
+  #slice_head(n = 5)
+
+
+
+```
+We have computed the cost to each unique customer in a specific cold drink channel, per case and per gallon in the years 2023 and 2024. We can see that:
+
+In 2023: 
+
+HIGH COSTS BUT LOW POTENTIAL INSIGHTS:
+
+1. The highest delivery cost is about 8.6 dollars per case. It is interesting to note that the top 15 customers (or more) with highest delivery cost are all Local Market Partners, belong to Dining, and purchased Bottles and Cans. The annual volume purchase range is 0-149 gallons which means they are all low potential customers, yet the delivery cost is the highest. >>LOW POTENTIAL, HIGH COST
+
+2. Out of these 15 customers, we also see that there are 2 customers(    ) who have purchased a high number of cases (82.5) with 18 total transactions, 64 cases with 6 transactions, yet the volume purchased in gallons was only a maximum of 149 gallons. >> LOW POTENTIAL IN TERMS OF GALLONS PURCHASED, JUST HIGH NO OF CASES PURCHASED >> NOT WHAT WE WANT
+
+
+3. Few customers such as customer with customer id 501583026 are observed to be low potential though they have highest number of transactions (205), and annual volume cases(86977). Yet this customer is also low potential (local market, goods customer) with only purchasing 0-149 gallons annually. The delivery cost of this customer is 7.32 dollars per case, and 4.6 dollars per gallon. HIGH ORDER VOLUME >> LOW POTENTIAL
+
+
+LOW COSTS:
+
+The lowest delivery cost is 0.37 dollars per case. It is interesting to note that the 25 lowest-costing customers all belong to the workplace channel, and almost all of them are local market partners too. All these customers purchase 1350+ volume annually and are observed to frequently order through a sales representative (personal assistant), call center, or any other ordering platform. Which means we can priorities these customers and increase customer bases belonging to these zip codes and states (66521, 67626, 42050, 40583, 2298, 1074,1344, etc).
+
+```{r}
+
+# Extract high potential - low cost states: join address_df with low costs data
+
+#head(address_df)
+
+address_df$zip <- as.character(address_df$zip)
+
+
+address_df %>%
+  rename(ZIP_CODE = `zip`)
+
+
+sum(is.na(address_df$zip))
+
+# Extract state: last but 5th part of the address
+address_df1 <- address_df %>%
+  mutate(STATE = word(`full address`, -5, -5, sep = ",")) %>% # Extracts second-last part
+  
+
+#address_df1 <- address_df1 %>%
+  #mutate(zip = ifelse(is.na('zip'), "UNKNOWN", zip)) %>%  # Replace NA with "UNKNOWN"
+  #rename(ZIP_CODE = "zip")
+
+
+  
+
+# View changes
+print(head(address_df1))
+
+
+```
+
+```{r}
+
+low25_state <- low25_costs %>%
+  left_join(address_df1, by = "zip") 
+  
+
+# View results
+#print(low25_state)
+
+```
+
+
+
+
+```{r}
+
+# Extract costs in  2024
+
+cost_2024 <- trans_profile_df %>%
+  fuzzy_left_join(
+    delivery_cost_agg,
+    by = c(
+      "COLD_DRINK_CHANNEL" = "COLD_DRINK_CHANNEL",
+      "ANNUAL_VOLUME_2024" = "Min_Vol",
+      "ANNUAL_VOLUME_2024" = "Max_Vol"
+    ),
+    match_fun = list(`==`, `>=`, `<=`)  # Ensures volume falls within the range
+  )
+
+head(cost_2024,15)
+
+
+
+
+# extract highest costs in 2024
+
+top15_costs2 <- cost_2024 %>%
+  arrange(desc(Median_Delivery_Cost)) %>%
+  slice_head(n =15)
+
+print(top15_costs2)
+
+
+
+# extract lowest costs in 2024
+
+low25_costs2 <- cost_2024 %>%
+  arrange(Median_Delivery_Cost) %>%
+  slice_head(n =25)
+
+print(low25_costs2)
+
+
+```
+
+In 2024:
+
+HIGH COSTS:
+
+The highest costs in 2024 remains the same - about 8.6 dollars per case. Again, the top 15 or more high cost customers are all Local Market Partners who belong to Dining channel and low volume potential.
+
+LOW COSTS:
+
+The median delivery cost remains at $0.37 per case in 2024, consistent with 2023. These customers continue to be primarily from the local market and belong to the workplace channel, dominated by other professional services within the sub trade channel.The most frequent order types remain sales representative, other, and call center and hence the same zip codes as in 2023 are prevalent in 2024: 66521, 67626, 42050, and 1074, etc.
