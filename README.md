@@ -49,6 +49,17 @@ High-Priority States:
   -  62% of high-density customers
 
 
+## Business Value of Solution
+
+**1. Data-Backed Strategic Planning:** Sensitivity analysis and scenario testing support leadership decisions on volume thresholds and customer prioritization, helping allocate resources where the ROI is highest.
+
+**2. Increased Revenue Through Targeted Growth**: By identifying "growth-ready" customers with predictive modeling (XGBoost), Swire can proactively target mid-volume customers (e.g., 300–449 gallons) who are most likely to grow with tailored campaigns—potentially boosting annual revenue significantly.
+
+**3. Optimized Delivery Cost Allocation:** The analysis of low-cost, growth-ready customers enables Swire to prioritize efficient accounts that yield high return per delivery dollar spent, maximizing profitability.
+
+**4. Smarter Customer Segmentation & Retention:** Customer insights (such as order size, digital engagement, CO2 purchases, trade channel) help Swire tailor retention strategies and improve the customer experience for specific segments like Local Market Partners or Dining channels.
+
+
 ## Contribution
 
 - **Data Preparation & EDA**: Performed data transformation, merged datasets, and conducted in-depth exploratory data analysis  to understand customer patterns, order behaviours, and volume distributions.
