@@ -57,7 +57,7 @@ High-Priority States:
 
 **3. Optimized Delivery Cost Allocation:** The analysis of low-cost, growth-ready customers enables Swire to prioritize efficient accounts that yield high return per delivery dollar spent, maximizing profitability.
 
-**4. Smarter Customer Segmentation & Retention:** Customer insights (such as order size, digital engagement, CO2 purchases, trade channel) help Swire tailor retention strategies and improve the customer experience for specific segments like Local Market Partners or Dining channels.
+**4. Smarter Customer Segmentation:** Customer insights (such as order size, digital engagement, CO2 purchases, trade channel) help Swire tailor retention strategies and improve the customer experience for specific segments like Local Market Partners or Dining channels.
 
 
 ## Contribution
