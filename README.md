@@ -97,7 +97,7 @@ High-Priority States:
 
 **4. Communicating Insights Visually:** Creating presentation visuals and dashboards helped me better understand what the data truly conveys in technical terms, while also improving my ability to clearly communicate insights to both technical and business audiences.
 
-**5. Team Work:** Strengthened collaboration skills by working closely with teammates to solve issues together and synthesize our findings into a strategic recommendation.
+**5. Team Work:** Strengthened collaboration skills by working with teammates, solve issues together, and synthesize our findings into a strategic recommendation.
 
 
 
