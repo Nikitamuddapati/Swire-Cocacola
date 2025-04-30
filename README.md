@@ -63,9 +63,9 @@ High-Priority States:
 
 - **Growth-ready customer characteristics:** Extracted key characteristics of growth-readiness including transaction frequency, order size, delivery type, and trade channel.
 
--- Identified a segment of **growth-ready customers with lowest delivery costs**, revealing scalable growth opportunities.
+  - Identified a segment of **growth-ready customers with lowest delivery costs**, revealing scalable growth opportunities.
 
--- Conducted feature importance analysis to determine the most influential variables in customer growth prediction (e.g., ordering platform usage, order volume, channel type).
+  - Conducted feature importance analysis to determine the most influential variables in customer growth prediction (e.g., ordering platform usage, order volume, channel type).
 
 - **Interactive Visualizations:** Designed interactive and real-time Tableau plots to visualize customer volume trends, delivery cost distributions, and high-potential customer segments across states and trade channels.
 
