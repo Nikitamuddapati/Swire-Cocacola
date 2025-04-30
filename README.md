@@ -20,6 +20,7 @@ This analysis identifies strategies to increase "growth-ready" customers (those 
 |-----------------------|----------------------|----------------------|---------------|
 | Net Annual Revenue    | **+$26,476.83**      | Baseline             | +$5/unit profit|
 
+
 **1. Implement a 300 gallons threshold:** captures 34% more growth-ready customers and increases revenue by $26,476.83, compared to initial threshold of 400 gallons.
 
 **2. Target "Mid-Volume" Customers**
