@@ -69,11 +69,11 @@ High-Priority States:
 
 ## Challenges Faced
 
-• Mapping delivery costs to customer volume was complex due to tiered ranges, requiring conditional joins to correctly assign cost per case/gallon.
+1. Mapping delivery costs to customer volume was complex due to tiered ranges, requiring conditional joins to correctly assign cost per case/gallon.
 
-• Determining the optimal threshold for identifying growth-ready customers required balancing cost minimization with growth maximization using a sensitivity analysis.
+2. Determining the optimal threshold for identifying growth-ready customers required balancing cost minimization with growth maximization using a sensitivity analysis.
 
-• Class imbalance in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
+3. Class imbalance in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
 
-• Distinguishing between feature importance and actual customer characteristics required building comparative summaries to identify true growth-ready traits beyond the model.
+4. Distinguishing between feature importance and actual customer characteristics required building comparative summaries to identify true growth-ready traits beyond the model.
 
