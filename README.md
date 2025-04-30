@@ -15,7 +15,7 @@ This analysis identifies strategies to increase "growth-ready" customers (those 
 
 ## Business Solution and Strategic Recommendations
 
-**1.Implement Logistic Regression (AUC:0.79) and XGboost models (AUC: 0.89)** to increase "growth-ready" customers while maximizing net revenue, and optimize costs.
+**1. Implement Logistic Regression (AUC:0.79) and XGboost models (AUC: 0.89)** to increase "growth-ready" customers while maximizing net revenue, and optimizing costs.
 
 | Metric                | 300-Gallon Threshold | 400-Gallon Threshold | Difference    |
 |-----------------------|----------------------|----------------------|---------------|
