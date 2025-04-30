@@ -6,7 +6,7 @@
 Swire Coca-Cola United States (SCCU) aims to enhance logistics efficiency by transitioning low-volume customers to an Alternate Route to Market (ARTM). 
 Currently, customers selling below an annual threshold of 400 gallons are assigned to ARTM instead of the DDR(direct delivery route). However, SCCU seeks to determine the optimal volume threshold that maximizes operational efficiency and revenue.
 
-**Our analysis will meet to these missions**
+**Analysis will meet these missions**
 
 - Identifying which customers should be included in ARTM versus DDR.
 - Determining the optimal volume threshold to improve logistical efficiency.
@@ -41,8 +41,6 @@ This analysis identifies strategies to increase "growth-ready" customers (those 
 **High-Priority States:**
   - priority_states:  MA, KS, KY, MD
   -  62% of high-density customers
-
-![Image20250422214208](https://github.com/user-attachments/assets/22c1f0a4-1919-4319-8af5-1e16ef08b4a1)
 
 
 
