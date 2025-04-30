@@ -19,24 +19,24 @@ This analysis identifies strategies to increase "growth-ready" customers (those 
 |-----------------------|----------------------|----------------------|---------------|
 | Net Annual Revenue    | **+$26,476.83**      | Baseline             | +$5/unit profit|
 
-Implement a 300 gallons threshold to capture 34% more growth-ready customers and increase revenue by $26,476.83, compared to initial threshold of 400 gallons.
+**1. Implement a 300 gallons threshold:** captures 34% more growth-ready customers and increases revenue by $26,476.83, compared to initial threshold of 400 gallons.
 
-#### 1. Target "Mid-Volume" Customers
-**Focus Segment:** 300-449 gallon/year customers  
-**Growth Potential:** 22% higher conversion rate than 450+ gallon cohort  
-**Tactics:**
+**2. Target "Mid-Volume" Customers**
+Focus Segment: 300-449 gallon/year customers  
+Growth Potential: 22% higher conversion rate than 450+ gallon cohort  
+Tactics:
 - Personalized replenishment plans via MY_COKE360 and EDI digital ordering platforms
 - Dynamic discounting for incremental volume commitments
 
-#### 2. Optimize Partnership Channels
-**High-Impact Channels:**
+**3. Optimize Partnership Channels**
+High-Impact Channels:
 
 - Sales Rep Outreach : 38% conversion lift with dedicated account managers
 - EDI Integration    : 27% faster order fulfillment for chain stores
 - MY_COKE360         : 41% customer retention in pilot markets
 
-#### 3. Geographic Focus
-**High-Priority States:**
+**4. Geographic Focus**
+High-Priority States:
   - priority_states:  MA, KS, KY, MD
   -  62% of high-density customers
 
