@@ -49,7 +49,7 @@ High-Priority States:
   -  62% of high-density customers
 
 
-## My Contribution
+## Contribution
 
 **Data Preparation & EDA**: Performed data transformation, merged datasets, and conducted in-depth exploratory data analysis  to understand customer patterns, order behaviours, and volume distributions.
 
