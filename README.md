@@ -65,7 +65,7 @@ High-Priority States:
 
 •	Conducted feature importance analysis to determine the most influential variables in customer growth prediction (e.g., ordering platform usage, order volume, channel type).
 
-**Interactive Dashboards:** Designed interactive Tableau dashboards to visualize customer volume trends, delivery cost distributions, and high-potential customer segments across states and trade channels.
+**Interactive Visualizations:** Designed interactive and real-time Tableau plots to visualize customer volume trends, delivery cost distributions, and high-potential customer segments across states and trade channels.
 
 **Final Presentation:** Delivered actionable insights and presented findings to stakeholders with clear business recommendations summarizing growth + low-cost trends, model results, and ROI strategies.
 
