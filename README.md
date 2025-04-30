@@ -80,12 +80,11 @@ High-Priority States:
 
 **Distinguishing between feature importance and actual customer characteristics** required building comparative feature means to identify true growth-ready vs non growth-ready traits beyond what the model relies on.
 
-**Segmenting customers** accurately using ZIP code-level geographic data.
-
-**Class imbalance** in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
-
 **Integrating and aligning diverse analytical outputs** from different team members into a unified, final deliverable.
 
+**Segmenting customers** accurately by clustering using ZIP code-level geographic data.
+
+**Class imbalance** in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
 
 
 ## Learnings
