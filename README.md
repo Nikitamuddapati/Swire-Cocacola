@@ -74,13 +74,18 @@ High-Priority States:
 
 ## Challenges Faced
 
-**1. Mapping delivery costs** to customer volume was complex due to tiered ranges, requiring range-based conditional joins to correctly assign each customer’s annual volume to match appropriate volume tier. This was handled by using between() in R (and later adapted to Python using merge + filtering) and calculating cost per customer using conditional logic for both case and gallon.
+**Mapping delivery costs** to customer volume was complex due to tiered ranges, requiring range-based conditional joins to correctly assign each customer’s annual volume to match appropriate volume tier. This was handled by using between() in R (and later adapted to Python using merge + filtering) and calculating cost per customer using conditional logic for both case and gallon.
 
-**2. Determining the optimal threshold** for identifying growth-ready customers required balancing both minimimal delivery costs and maximum number of high potential customers.
+**Determining the optimal threshold** for identifying growth-ready customers required balancing both minimimal delivery costs and maximum number of high potential customers.
 
-**3. Distinguishing between feature importance and actual customer characteristics** required building comparative feature means to identify true growth-ready vs non growth-ready traits beyond what the model relies on.
+**Distinguishing between feature importance and actual customer characteristics** required building comparative feature means to identify true growth-ready vs non growth-ready traits beyond what the model relies on.
 
-**4. Class imbalance** in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
+**Segmenting customers** accurately using ZIP code-level geographic data.
+
+**Class imbalance** in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
+
+**Integrating and aligning diverse analytical outputs** from different team members into a unified, final deliverable.
+
 
 
 ## Learnings
