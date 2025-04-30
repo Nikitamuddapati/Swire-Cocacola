@@ -59,7 +59,7 @@ High-Priority States:
 
 **Growth-ready customer characteristics:** Extracted key characteristics of growth-readiness including transaction frequency, order size, delivery type, and trade channel.
 
-•	Identified a segment of growth-ready customers with low delivery costs, revealing scalable growth opportunities.
+•	Identified a segment of **growth-ready customers with lowest delivery costs**, revealing scalable growth opportunities.
 
 •	Conducted feature importance analysis to determine the most influential variables in customer growth prediction (e.g., ordering platform usage, order volume, channel type).
 
@@ -69,11 +69,11 @@ High-Priority States:
 
 ## Challenges Faced
 
-**1. Mapping delivery costs** to customer volume was complex due to tiered ranges, requiring conditional joins to correctly assign cost per case/gallon.
+**1. Mapping delivery costs** to customer volume was complex due to tiered ranges, requiring range-based conditional joins to correctly assign each customer’s annual volume to match appropriate volume tier. This was handled by using between() in R (and later adapted to Python using merge + filtering) and calculating cost per customer using conditional logic for both case and gallon.
 
-**2. Determining the optimal threshold** for identifying growth-ready customers required balancing cost minimization with growth maximization using a sensitivity analysis.
+**2. Determining the optimal threshold** for identifying growth-ready customers required balancing minimimal delivery costs while maximize the number of high potential customers.
 
 **3. Class imbalance** in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
 
-**4. Distinguishing between feature importance and actual customer characteristics** required building comparative summaries to identify true growth-ready traits beyond the model.
+**4. Distinguishing between feature importance and actual customer characteristics** required building comparative feature means to identify true growth-ready vs non growth-ready traits beyond what the model relies on.
 
