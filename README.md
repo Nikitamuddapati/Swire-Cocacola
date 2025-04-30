@@ -91,6 +91,6 @@ High-Priority States:
 
 **3. Sensitivity Analysis for Strategy:** I learned to apply sensitivity analysis to uncover operational levers like threshold tuning, which can optimize both growth potential and cost efficiency.
 
-**4. Communicating Insights Visually:** Creating presentation visuals and dashboards helped me better understand what the data truly conveys, while also improving my ability to clearly communicate insights to both technical and business audiences.
+**4. Communicating Insights Visually:** Creating presentation visuals and dashboards helped me better understand what the data truly conveys in technical terms, while also improving my ability to clearly communicate insights to both technical and business audiences.
 
 
