@@ -51,7 +51,7 @@ High-Priority States:
 
 ## Contribution
 
-**Data Preparation & EDA**: Performed data transformation, merged datasets, and conducted in-depth exploratory data analysis  to understand customer patterns, order behaviours, and volume distributions.
+- **Data Preparation & EDA**: Performed data transformation, merged datasets, and conducted in-depth exploratory data analysis  to understand customer patterns, order behaviours, and volume distributions.
 
 **Sensitivity Analysis:** Used a custom function approach to identify the optimal threshold for all customers that minimizes the total delivery costs across both years to approximately $47 million, while also retaining 3,380 more high-potential customers. This would help Swire increase the total number of high-potential customers to 9,841, striking a better balance between cost efficiency and growth potential.
 
