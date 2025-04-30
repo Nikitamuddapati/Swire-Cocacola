@@ -13,6 +13,7 @@ on direct delivery routes, sustaining their full revenue potential while optimiz
 
 This analysis identifies strategies to increase "growth-ready" customers (those transitioning from <300 to ≥300 annual gallons) while maximizing net revenue. Key insights derived from logistic regression and XGBoost models (AUC: 0.79 and 0.89) inform actionable recommendations.
 
+
 ## Business Solution and Strategic Recommendations
 
 **1. Implement Logistic Regression (AUC:0.79) and XGboost models (AUC:0.89)** to increase "growth-ready" customers while maximizing net revenue, and optimizing costs.
@@ -47,6 +48,7 @@ High-Priority States:
   - priority_states:  MA, KS, KY, MD
   -  62% of high-density customers
 
+
 ## My Contribution
 
 **Data Preparation & EDA**: Performed data transformation, merged datasets, and conducted in-depth exploratory data analysis  to understand customer patterns, order behaviours, and volume distributions.
@@ -69,15 +71,16 @@ High-Priority States:
 
 **Final Presentation:** Delivered actionable insights and presented findings to stakeholders with clear business recommendations summarizing growth + low-cost trends, model results, and ROI strategies.
 
+
 ## Challenges Faced
 
 **1. Mapping delivery costs** to customer volume was complex due to tiered ranges, requiring range-based conditional joins to correctly assign each customer’s annual volume to match appropriate volume tier. This was handled by using between() in R (and later adapted to Python using merge + filtering) and calculating cost per customer using conditional logic for both case and gallon.
 
-**2. Determining the optimal threshold** for identifying growth-ready customers required balancing minimimal delivery costs while maximize the number of high potential customers.
+**2. Determining the optimal threshold** for identifying growth-ready customers required balancing both minimimal delivery costs and maximum number of high potential customers.
 
-**3. Class imbalance** in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
+**3. Distinguishing between feature importance and actual customer characteristics** required building comparative feature means to identify true growth-ready vs non growth-ready traits beyond what the model relies on.
 
-**4. Distinguishing between feature importance and actual customer characteristics** required building comparative feature means to identify true growth-ready vs non growth-ready traits beyond what the model relies on.
+**4. Class imbalance** in the target variable (only 4% growth-ready) made modeling difficult, which was addressed using stratified sampling, ROC-AUC evaluation, and boosting techniques.
 
 
 ## Learnings
