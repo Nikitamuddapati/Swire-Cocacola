@@ -17,12 +17,13 @@ This analysis identifies strategies to increase "growth-ready" customers (those 
 
 **1. Implement Logistic Regression (AUC:0.79) and XGboost models (AUC:0.89)** to increase "growth-ready" customers while maximizing net revenue, and optimizing costs.
 
+**2. Implement a 300 Gallons Threshold:** captures 34% more growth-ready customers and increases revenue by $26,476.83, compared to initial threshold of 400 gallons.
+
+
 | Metric                | 300-Gallon Threshold | 400-Gallon Threshold | Difference    |
 |-----------------------|----------------------|----------------------|---------------|
 | Net Annual Revenue    | **+$26,476.83**      | Baseline             | +$5/unit profit|
 
-
-**2. Implement a 300 Gallons Threshold:** captures 34% more growth-ready customers and increases revenue by $26,476.83, compared to initial threshold of 400 gallons.
 
 **3. Target "Mid-Volume" Customers**
 
