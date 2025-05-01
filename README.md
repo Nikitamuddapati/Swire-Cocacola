@@ -51,7 +51,7 @@ High-Priority States:
 
 ## Business Value of Solution
 
-**1. Data-Backed Strategic Planning:** Sensitivity analysis and scenario testing support leadership decisions on volume thresholds and customer prioritization, helping allocate resources where the ROI is highest.
+**1. Data-Backed Strategic Planning:** Supports leadership decisions and customer prioritization on 300 threshold, helping allocate resources where the ROI is highest.
 
 **2. Increased Revenue Through Targeted Growth**: By identifying "growth-ready" customers with predictive modeling (XGBoost), Swire can proactively target mid-volume customers (e.g., 300–449 gallons) who are most likely to grow with tailored campaigns—potentially boosting annual revenue significantly.
 
